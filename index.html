@@ -1,0 +1,231 @@
+<html lang="en">
+  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>informations</title>
+  
+    <!-- INCLUDING JQUERY-->
+    <script src=
+"https://code.jquery.com/jquery-3.5.1.js">
+    </script>
+  
+    <!-- CSS FOR STYLING THE PAGE -->
+    <style>
+        body {
+            font-family: 'Play',Helvetica,Arial,sans-serif;
+            background-color: #1d242f;
+            
+        }
+
+        table {
+            margin: 0 auto;
+            font-size: large;
+        }
+  
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            font-size: xx-large;
+            font-family: 'Gill Sans', 
+                'Gill Sans MT', ' Calibri', 
+                'Trebuchet MS', 'sans-serif';
+        }
+  
+        td {
+            background-color: #E4F5D4;
+            
+        }
+  
+        th,
+        td {
+            font-weight: bold;
+            
+            padding: 10px;
+            text-align: center;
+        }
+  
+        td {
+            font-weight: lighter;
+        }
+
+        @media screen and (min-width: 720px) {
+        .adjustment2{
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+        display: inline-block !important;
+        }
+
+        .arrangement2{
+        padding-left: 20px !important;
+        padding-right: 20px !important;  
+        display: inline-block !important;
+        }
+
+        .arrangement1{
+		display: inline-block;
+		}
+        .arrangement3{   
+		display: inline-block;
+		}
+        .adjustment1{
+        display: inline-block;
+         }
+		.adjustment3{
+        display: inline-block;
+		}  
+        }
+
+        .house-style{
+            background: #3E495B;
+            color:#FFF;
+            text-transform: capitalize;
+        }
+        .house-style-first{
+            background: #3E495B;
+            color:#FFF;
+            text-transform: capitalize;
+            border-top-left-radius: 5px;
+        }
+        .profit-style{
+            background: #006600;
+            color:#FFF;
+            border-top-right-radius: 5px;
+        }
+        .table-second{
+            background-color: #0296c8;
+            color:#FFF;
+        }
+    </style>
+</head>
+  
+<body>
+    <section>
+        <h1>Odds and Teams</h1>
+  
+        <!-- TABLE CONSTRUCTION-->
+        <table id='table'>
+            <!-- HEADING FORMATION -->  
+            <script>
+                $(document).ready(function () {
+                    const BET_HOUSES = 10;
+                    // FETCHING DATA FROM JSON FILE
+                    //https://api.the-odds-api.com/v4/sports/upcoming/odds/?regions=us&markets=h2h&apiKey=6ddd40ac2e167ca91fed3506473f4ffb
+                    $.getJSON("https://api.the-odds-api.com/v4/sports/upcoming/odds?markets=h2h&regions=uk,eu,us&apiKey=6ddd40ac2e167ca91fed3506473f4ffb", 
+                            function (data) {
+                        var informations = '';	
+						
+                        // ITERATING THROUGH OBJECTS
+                        $.each(data, function (key, value) {
+                            console.log(value.bookmakers.length)
+							if(0 === key) {
+							informations += `<tr style="border-color:#FFF;"><th style="border-color:#FFF;"></th>
+				<th style="border-color:#FFF;"></th>
+				<th class="house-style-first">${value.bookmakers[0].key}</th>
+				<th class="house-style">${value.bookmakers[1].key}</th>
+				<th class="house-style">${value.bookmakers[2].key}</th>
+				<th class="house-style">${value.bookmakers[3].key}</th>
+				<th class="house-style">${value.bookmakers[4].key}</th>
+                <th class="profit-style">Profit</th>
+            </tr>
+            <tr>
+                <th class="table-second">First Team</th>
+				<th class="table-second">Second Team</th>
+				<th class="table-second" ><p class="adjustment1">1</p><p class="adjustment2">2</p><p class="adjustment3">X</p></th>
+				<th class="table-second"><p class="adjustment1">1</p><p class="adjustment2">2</p><p class="adjustment3">X</p></th>
+				<th class="table-second"><p class="adjustment1">1</p><p class="adjustment2">2</p><p class="adjustment3">X</p></th>
+				<th class="table-second"><p class="adjustment1">1</p><p class="adjustment2">2</p><p class="adjustment3">X</p></th>
+				<th class="table-second"><p class="adjustment1">1</p><p class="adjustment2">2</p><p class="adjustment3">X</p></th>
+                <th class="table-second"><p class="adjustment1">1</p><p class="adjustment2">2</p><p class="adjustment3">X</p></th>
+            </tr>`;
+							}
+                            //CONSTRUCTION OF ROWS HAVING
+                            // DATA FROM JSON OBJECT
+                            informations += '<tr>';
+  
+                            informations += '<td>' + 
+                                value.home_team + '</td>';
+							
+                            informations += '<td>' + 
+                                value.away_team + '</td>';	
+
+							informations += `<td><p class="arrangement1">${value.bookmakers[0]?.markets[0].outcomes[0]?.price}</p>
+                                <p class="arrangement2">${value.bookmakers[0]?.markets[0].outcomes[1]?.price}</p>
+                                <p class="arrangement3">${value.bookmakers[0]?.markets[0].outcomes[2] ? value.bookmakers[0]?.markets[0].outcomes[2].price : '-'}</p>
+								<p style="font-size: 10pt">Updated: ${new Date(value.bookmakers[0].last_update).toLocaleDateString('ro', {year: 'numeric', month: 'numeric', day: 'numeric',hour: 'numeric', minute: 'numeric'})}</p></td>`;
+							
+							informations += `<td><p class="arrangement1">${value.bookmakers[1]?.markets[0].outcomes[0]?.price}</p>
+                                <p class="arrangement2">${value.bookmakers[1]?.markets[0].outcomes[1]?.price}</p>
+                                <p class="arrangement3">${value.bookmakers[1]?.markets[0].outcomes[2] ? value.bookmakers[1]?.markets[0].outcomes[2].price : '-'}</p>
+								<p style="font-size: 10pt">Updated: ${new Date(value.bookmakers[1].last_update).toLocaleDateString('ro', {year: 'numeric', month: 'numeric', day: 'numeric',hour: 'numeric', minute: 'numeric'})}</p></td>`;
+							
+							informations += `<td><p class="arrangement1">${value.bookmakers[2]?.markets[0].outcomes[0]?.price}</p>
+                                <p class="arrangement2">${value.bookmakers[2]?.markets[0].outcomes[1]?.price}</p>
+                                <p class="arrangement3">${value.bookmakers[2]?.markets[0].outcomes[2] ? value.bookmakers[2]?.markets[0].outcomes[2].price : '-'}</p>
+                                <p style="font-size: 10pt">Updated: ${new Date(value.bookmakers[2].last_update).toLocaleDateString('ro', {year: 'numeric', month: 'numeric', day: 'numeric',hour: 'numeric', minute: 'numeric'})}</p></td>`;		
+							
+							informations += `<td><p class="arrangement1">${value.bookmakers[3]?.markets[0].outcomes[0]?.price}</p>
+                                <p class="arrangement2">${value.bookmakers[3]?.markets[0].outcomes[1]?.price}</p>
+                                <p class="arrangement3">${value.bookmakers[3]?.markets[0].outcomes[2] ? value.bookmakers[3]?.markets[0].outcomes[2]?.price : '-'}</p>
+                                <p style="font-size: 10pt">Updated: ${new Date(value.bookmakers[3].last_update).toLocaleDateString('ro', {year: 'numeric', month: 'numeric', day: 'numeric',hour: 'numeric', minute: 'numeric'})}</p></td>`;	
+							
+							informations += `<td><p class="arrangement1">${value.bookmakers[4]?.markets[0].outcomes[0]?.price}</p>
+                                <p class="arrangement2">${value.bookmakers[4]?.markets[0].outcomes[1]?.price}</p>
+                                <p class="arrangement3">${value.bookmakers[4]?.markets[0].outcomes[2] ? value.bookmakers[4]?.markets[0].outcomes[2]?.price : '-'}</p>
+								<p style="font-size: 10pt">Updated: ${new Date(value.bookmakers[4].last_update).toLocaleDateString('ro', {year: 'numeric', month: 'numeric', day: 'numeric',hour: 'numeric', minute: 'numeric'})}</p></td>`;	
+                            
+                            let max1 = value.bookmakers[0]?.markets[0].outcomes[0]?.price;
+                            let max1House = value.bookmakers[0].key;
+							for(let i = 0; i <= BET_HOUSES; i++) {
+                                if(value.bookmakers[i]?.markets[0].outcomes[0].price > max1) {
+                                    max1 = value.bookmakers[i]?.markets[0].outcomes[0].price;
+                                    max1House = value.bookmakers[i].key;
+                                }
+                            }
+
+                            let max2 = value.bookmakers[0]?.markets[0].outcomes[1].price;
+                            let max2House = value.bookmakers[0].key;
+							for(let i = 0; i <= BET_HOUSES; i++) {
+                                if(value.bookmakers[i]?.markets[0].outcomes[1].price > max2) {
+                                    max2 = value.bookmakers[i]?.markets[0].outcomes[1].price;
+                                    max2House = value.bookmakers[i].key;
+                                }
+                            }
+
+                            let maxX = value.bookmakers[0]?.markets[0].outcomes[2]?.price || 1;
+                            let maxXHouse = value.bookmakers[0].key;
+							for(let i = 0; i <= BET_HOUSES; i++) {
+                                if(value.bookmakers[i]?.markets[0].outcomes[2]?.price > maxX) {
+                                    maxX = value.bookmakers[i]?.markets[0].outcomes[2]?.price || 1;
+                                    maxXHouse = value.bookmakers[i].key;
+                                }
+                            }
+                                const quotient = (1 / max1 + 1 / maxX + 1 / max2);
+      const stakes = 100;
+      const stake1 = 1 / quotient * stakes / max1;
+      const stakeX = 1 / quotient * stakes / maxX;
+      const stake2 = 1 / quotient * stakes / max2;
+      const profit = (100 / quotient) - 100;
+
+      const sum_profit = (stakes * profit) / 100;
+      let color = 'green';
+      if (quotient >= 1) {
+        color = 'red'
+      }
+                            informations += `<td>1: ${max1House}: C: ${max1}, Invest: ${stake1.toFixed(2)} RON<br/>
+                                2: ${max2House}: C: ${max2}, Invest: ${stake2.toFixed(2)} RON<br/>
+                                ${maxX !== 1 ? `X: ${maxXHouse}: C: ${maxX}, Invest: ${stakeX.toFixed(2)} RON` : ''}<br/>
+                            <span style="color:${color}">Profit: ${sum_profit.toFixed(2)}</span>
+							</td>`;									
+                            informations += '</tr>';
+						});
+                          
+                        //INSERTING ROWS INTO TABLE 
+                        $('#table').append(informations);
+                    });
+                });
+            </script>
+    </section>
+</body>
+  
+</html>
